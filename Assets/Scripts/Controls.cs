@@ -5,7 +5,7 @@ public class Controls : MonoBehaviour {
 
 	Rigidbody2D rb;
 	Animator playerAni;
-	Vector2 jumpforce;
+	public Vector2 jumpforce;
 	bool inair;
 	public Sprite fall;
 	public Sprite jump;
@@ -20,7 +20,7 @@ public class Controls : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
 		playerAni = GetComponentInChildren<Animator>();
-		jumpforce = new Vector2(0f,200f);
+		//jumpforce = new Vector2(0f,200f);
 		inair = false;
 		pHand = GetComponentInChildren<WeaponAim>().transform.FindChild("PlayerHand");
 		throwForce = new Vector2(0.0f, 50.5f);
@@ -87,13 +87,13 @@ public class Controls : MonoBehaviour {
 		{
 			//do we really want this or should sprite facing be determined by weapon aim?
 			Vector3 newscale = transform.localScale;
-			newscale.x =-1;
+			newscale.x =- Mathf.Abs(transform.localScale.x);
 			transform.localScale = newscale;
 		}
 		else
 		{
 			Vector3 newscale = transform.localScale;
-			newscale.x =1;
+			newscale.x =Mathf.Abs (transform.localScale.x);
 			transform.localScale = newscale;
 		}
 

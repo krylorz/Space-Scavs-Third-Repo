@@ -20,7 +20,7 @@ public class ProjectileNew : MonoBehaviour {
 		{
 			//do we really want this or should sprite facing be determined by weapon aim?
 			Vector3 newscale = transform.localScale;
-			newscale.x =-1;
+			newscale.x =-Mathf.Abs (transform.localScale.x);
 			transform.localScale = newscale;
 			Vector3 newRot = transform.rotation.eulerAngles;
 			newRot.z = -newRot.z;
@@ -41,20 +41,17 @@ public class ProjectileNew : MonoBehaviour {
 
 	void OnBecameInvisible()
 	{
+		Instantiate(explosion,this.transform.position,this.transform.rotation);
 		Destroy(this.gameObject);
 	}
 
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.gameObject.tag == "Enemy")
+		if(other.gameObject.tag != "weapon")
 		{
+			Instantiate(explosion,this.transform.position,this.transform.rotation);
 			Destroy(this.gameObject);
 		}
-	}
-
-	void OnDestroy()
-	{
-		Instantiate(explosion,this.transform.position,this.transform.rotation);
 	}
 }
