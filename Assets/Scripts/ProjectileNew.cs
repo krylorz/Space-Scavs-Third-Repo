@@ -48,10 +48,18 @@ public class ProjectileNew : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+
+		//do not collide with another weapon
 		if(other.gameObject.tag != "weapon")
 		{
-			Instantiate(explosion,this.transform.position,this.transform.rotation);
-			Destroy(this.gameObject);
+			//do not collide with the player
+			//these had to be separated because order of operations was messing up with them 
+			//both in an or statement
+			if( other.gameObject.tag != "Player")
+			{
+				Instantiate(explosion,this.transform.position,this.transform.rotation);
+				Destroy(this.gameObject);
+			}
 		}
 	}
 }

@@ -15,6 +15,8 @@ public class Controls : MonoBehaviour {
 	public int maxSupplies = 8;
 	public int curSupplies = 0;
 	bool onePickUp = true;
+	float moveSpeed = 0.2f;
+	public float maxSpeed;
 
 	// Use this for initialization
 	void Start () {
@@ -47,10 +49,10 @@ public class Controls : MonoBehaviour {
 				playerAni.Play("bodywalk");
 			}
 			// cheap way to max out velocity
-			if(Mathf.Abs(rb.velocity.x) <0.8f)
+			if(Mathf.Abs(rb.velocity.x) <maxSpeed)
 			{
 				//add velocity
-				rb.velocity +=new Vector2( Input.GetAxis("Horizontal") *0.2f,0);
+				rb.velocity +=new Vector2( Input.GetAxis("Horizontal") *moveSpeed,0);
 			}
 
 		}
