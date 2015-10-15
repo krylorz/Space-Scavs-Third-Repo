@@ -72,7 +72,6 @@ public class Controls : MonoBehaviour {
 		//jumping
 		if(Input.GetAxis("Jump")>0f && inair == false)
 		{
-
 			rb.AddForce(jumpforce);
 			inair = true;
 		}
@@ -100,9 +99,28 @@ public class Controls : MonoBehaviour {
 			transform.localScale = newscale;
 		}
 		//Shooting
-		if(Input.GetButtonDown("Fire1") && pHand.transform.childCount !=0)
+		if(pHand.transform.childCount !=0)
 		{
-			pHand.GetComponentInChildren<weapon>().Shoot();
+			int weapFire = (int) pHand.transform.GetChild(0).GetComponent<weapon>().weaponFireType;
+			//single
+			if(weapFire == 0)
+			{
+				if(Input.GetButtonDown ("Fire1"))
+				{
+					pHand.GetComponentInChildren<weapon>().Shoot();
+				}
+			}
+			//burst
+			//auto
+			if(weapFire == 1 || weapFire == 2)
+			{
+				if(Input.GetButton("Fire1"))
+				{
+					pHand.GetComponentInChildren<weapon>().Shoot();
+				}
+			}
+			//Input.GetButtonDown("Fire1") && 
+			//pHand.GetComponentInChildren<weapon>().Shoot();
 		}
 
 		//should probably go somewhere better instead of in the player
