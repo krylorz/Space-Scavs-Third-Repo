@@ -27,9 +27,11 @@ public class ProjectileNew : MonoBehaviour {
 			transform.rotation= Quaternion.Euler(newRot);
 
 		}
-
-		GameObject obj = Instantiate(flash,this.transform.position,this.transform.rotation) as GameObject;
-		obj.transform.localScale = this.transform.localScale;
+		if(flash != null)
+		{
+			GameObject obj = Instantiate(flash,this.transform.position,this.transform.rotation) as GameObject;
+			obj.transform.localScale = this.transform.localScale;
+		}
 
 	}
 	
@@ -41,7 +43,10 @@ public class ProjectileNew : MonoBehaviour {
 
 	void OnBecameInvisible()
 	{
-		Instantiate(explosion,this.transform.position,this.transform.rotation);
+		if(explosion != null)
+		{
+			Instantiate(explosion,this.transform.position,this.transform.rotation);
+		}
 		Destroy(this.gameObject);
 	}
 
@@ -57,7 +62,10 @@ public class ProjectileNew : MonoBehaviour {
 			//both in an or statement
 			if( other.gameObject.tag != "Player")
 			{
-				Instantiate(explosion,this.transform.position,this.transform.rotation);
+				if(explosion != null)
+				{
+					Instantiate(explosion,this.transform.position,this.transform.rotation);
+				}
 				Destroy(this.gameObject);
 			}
 		}

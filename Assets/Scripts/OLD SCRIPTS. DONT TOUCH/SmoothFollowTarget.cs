@@ -9,7 +9,7 @@ public class SmoothFollowTarget : MonoBehaviour {
 	
 	void Awake(){
 		lastGameObjPos = transform.position;
-		offset.y = transform.position.y;
+		//offset.y = transform.position.y;
 	}
 	
 	void LateUpdate(){
