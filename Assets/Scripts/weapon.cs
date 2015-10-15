@@ -49,7 +49,7 @@ public class weapon : MonoBehaviour {
 	{
 		if(!reloading)
 		{
-			Vector3 direction = fireLocation.position - this.transform.position;
+			Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 			GameObject projShot = Instantiate(proj,fireLocation.position,fireLocation.rotation) as GameObject;
 			projShot.GetComponent<ProjectileNew>().dir = direction;
 

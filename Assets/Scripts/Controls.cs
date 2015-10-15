@@ -5,7 +5,7 @@ public class Controls : MonoBehaviour {
 
 	Rigidbody2D rb;
 	Animator playerAni;
-	Vector2 jumpforce;
+	public Vector2 jumpforce;
 	bool inair;
 	public Sprite fall;
 	public Sprite jump;
@@ -15,12 +15,15 @@ public class Controls : MonoBehaviour {
 	public int maxSupplies = 8;
 	public int curSupplies = 0;
 	bool onePickUp = true;
+	float moveSpeed = 0.2f;
+	public float maxSpeed;
+	public int health;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
 		playerAni = GetComponentInChildren<Animator>();
-		jumpforce = new Vector2(0f,200f);
+		//jumpforce = new Vector2(0f,200f);
 		inair = false;
 		pHand = GetComponentInChildren<WeaponAim>().transform.FindChild("PlayerHand");
 		throwForce = new Vector2(0.0f, 50.5f);
@@ -47,10 +50,10 @@ public class Controls : MonoBehaviour {
 				playerAni.Play("bodywalk");
 			}
 			// cheap way to max out velocity
-			if(Mathf.Abs(rb.velocity.x) <0.8f)
+			if(Mathf.Abs(rb.velocity.x) <maxSpeed)
 			{
 				//add velocity
-				rb.velocity +=new Vector2( Input.GetAxis("Horizontal") *0.2f,0);
+				rb.velocity +=new Vector2( Input.GetAxis("Horizontal") *moveSpeed,0);
 			}
 
 		}
@@ -87,23 +90,26 @@ public class Controls : MonoBehaviour {
 		{
 			//do we really want this or should sprite facing be determined by weapon aim?
 			Vector3 newscale = transform.localScale;
-			newscale.x =-1;
+			newscale.x =- Mathf.Abs(transform.localScale.x);
 			transform.localScale = newscale;
 		}
 		else
 		{
 			Vector3 newscale = transform.localScale;
-			newscale.x =1;
+			newscale.x =Mathf.Abs (transform.localScale.x);
 			transform.localScale = newscale;
 		}
-
-
 		//Shooting
 		if(Input.GetButtonDown("Fire1") && pHand.transform.childCount !=0)
 		{
 			pHand.GetComponentInChildren<weapon>().Shoot();
 		}
 
+		//should probably go somewhere better instead of in the player
+		if(health < 0)
+		{
+			Application.LoadLevel(Application.loadedLevelName);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other)
@@ -168,10 +174,27 @@ public class Controls : MonoBehaviour {
 				onePickUp = false;
 			}
 		}
+
+		if(Input.GetKey(KeyCode.W))
+		{
+			if(other.gameObject.tag =="Ladder")
+			{
+				if(Mathf.Abs(rb.velocity.y) <maxSpeed/2)
+				{
+					//add velocity
+					rb.velocity +=new Vector2( 0,moveSpeed);
+				}
+			}
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
 		onePickUp = true;
+	}
+
+	public void takeDamage()
+	{
+		health --;
 	}
 }
