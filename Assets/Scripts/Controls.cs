@@ -103,7 +103,7 @@ public class Controls : MonoBehaviour {
 		{
 			int weapFire = (int) pHand.transform.GetChild(0).GetComponent<weapon>().weaponFireType;
 			//single
-			if(weapFire == 0)
+			if(weapFire == 0 || weapFire == 3)
 			{
 				if(Input.GetButtonDown ("Fire1"))
 				{
@@ -158,7 +158,7 @@ public class Controls : MonoBehaviour {
 					if(other.gameObject != oldWeap)
 					{
 						pHand.DetachChildren();
-						oldWeap.transform.localScale = new Vector2(1.0f,1.0f);
+						oldWeap.transform.localScale = new Vector2(5.0f,5.0f);
 						oldWeap.GetComponent<Rigidbody2D>().AddForce(throwForce);
 					}
 				}

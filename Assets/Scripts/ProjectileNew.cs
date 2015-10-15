@@ -53,7 +53,11 @@ public class ProjectileNew : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
+		if(other.gameObject.tag == "projectile")
+		{
+			Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(),other.gameObject.GetComponent<BoxCollider2D>());
+			//Physics2D.IgnoreCollision(this.GetComponent<CircleCollider2D>(),other);
+		}
 		//do not collide with another weapon
 		if(other.gameObject.tag != "weapon")
 		{
@@ -62,11 +66,15 @@ public class ProjectileNew : MonoBehaviour {
 			//both in an or statement
 			if( other.gameObject.tag != "Player")
 			{
-				if(explosion != null)
+
+				if(other.gameObject.tag != "projectile")
 				{
-					Instantiate(explosion,this.transform.position,this.transform.rotation);
+					if(explosion != null)
+					{
+						Instantiate(explosion,this.transform.position,this.transform.rotation);
+					}
+					Destroy(this.gameObject);
 				}
-				Destroy(this.gameObject);
 			}
 		}
 	}

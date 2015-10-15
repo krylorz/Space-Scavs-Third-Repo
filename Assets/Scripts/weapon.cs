@@ -7,7 +7,8 @@ public class weapon : MonoBehaviour {
 	{
 		SINGLE = 0,
 		BURST,
-		AUTO
+		AUTO,
+		SHOTGUN
 	}
 
 	Rigidbody2D rb;
@@ -109,6 +110,31 @@ public class weapon : MonoBehaviour {
 			}
 			curBurstNum++;
 		}
+		else if(weaponFireType == fireType.SHOTGUN)
+		{
+			if(!reloading)
+			{
+				Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
+				GameObject projShot = Instantiate(proj,fireLocation.position,fireLocation.rotation) as GameObject;
+				GameObject projShot2 = Instantiate(proj,fireLocation.position,fireLocation.rotation) as GameObject;
+				GameObject projShot3 = Instantiate(proj,fireLocation.position,fireLocation.rotation) as GameObject;
+				projShot.GetComponent<ProjectileNew>().dir = direction;
+				direction.x-=0.5f;
+				direction.y-=0.5f;
+				projShot2.GetComponent<ProjectileNew>().dir = direction;
+				direction.x+=1f;
+				direction.y+=1f;
+				projShot3.GetComponent<ProjectileNew>().dir = direction;
+
+				if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x < transform.position.x)
+				{
+					projShot.GetComponent<ProjectileNew>().faceLeft =true;
+					projShot2.GetComponent<ProjectileNew>().faceLeft =true;
+					projShot3.GetComponent<ProjectileNew>().faceLeft =true;
+				}
+				reloading = true;
+			}
+		}
 
 
 	}
@@ -120,5 +146,10 @@ public class weapon : MonoBehaviour {
 			Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(),other);
 			Physics2D.IgnoreCollision(this.GetComponent<CircleCollider2D>(),other);
 		}
+//		if(other.tag == "projectile")
+//		{
+//			Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(),other);
+//			Physics2D.IgnoreCollision(this.GetComponent<CircleCollider2D>(),other);
+//		}
 	}
 }
