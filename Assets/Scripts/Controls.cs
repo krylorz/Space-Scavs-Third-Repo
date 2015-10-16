@@ -191,6 +191,10 @@ public class Controls : MonoBehaviour {
 				curSupplies = curSupplies +1;
 				onePickUp = false;
 			}
+			else if(other.gameObject.tag == "chest")
+			{
+				//plug in shit here
+			}
 		}
 
 		if(Input.GetKey(KeyCode.W))
