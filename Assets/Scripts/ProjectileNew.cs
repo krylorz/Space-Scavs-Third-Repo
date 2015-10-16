@@ -27,9 +27,11 @@ public class ProjectileNew : MonoBehaviour {
 			transform.rotation= Quaternion.Euler(newRot);
 
 		}
-
-		GameObject obj = Instantiate(flash,this.transform.position,this.transform.rotation) as GameObject;
-		obj.transform.localScale = this.transform.localScale;
+		if(flash != null)
+		{
+			GameObject obj = Instantiate(flash,this.transform.position,this.transform.rotation) as GameObject;
+			obj.transform.localScale = this.transform.localScale;
+		}
 
 	}
 	
@@ -41,14 +43,21 @@ public class ProjectileNew : MonoBehaviour {
 
 	void OnBecameInvisible()
 	{
-		Instantiate(explosion,this.transform.position,this.transform.rotation);
+		if(explosion != null)
+		{
+			Instantiate(explosion,this.transform.position,this.transform.rotation);
+		}
 		Destroy(this.gameObject);
 	}
 
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
+		if(other.gameObject.tag == "projectile")
+		{
+			Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(),other.gameObject.GetComponent<BoxCollider2D>());
+			//Physics2D.IgnoreCollision(this.GetComponent<CircleCollider2D>(),other);
+		}
 		//do not collide with another weapon
 		if(other.gameObject.tag != "weapon")
 		{
@@ -57,8 +66,15 @@ public class ProjectileNew : MonoBehaviour {
 			//both in an or statement
 			if( other.gameObject.tag != "Player")
 			{
-				Instantiate(explosion,this.transform.position,this.transform.rotation);
-				Destroy(this.gameObject);
+
+				if(other.gameObject.tag != "projectile")
+				{
+					if(explosion != null)
+					{
+						Instantiate(explosion,this.transform.position,this.transform.rotation);
+					}
+					Destroy(this.gameObject);
+				}
 			}
 		}
 	}
