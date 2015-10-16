@@ -72,7 +72,6 @@ public class Controls : MonoBehaviour {
 		//jumping
 		if(Input.GetAxis("Jump")>0f && inair == false)
 		{
-
 			rb.AddForce(jumpforce);
 			inair = true;
 		}
@@ -100,9 +99,28 @@ public class Controls : MonoBehaviour {
 			transform.localScale = newscale;
 		}
 		//Shooting
-		if(Input.GetButtonDown("Fire1") && pHand.transform.childCount !=0)
+		if(pHand.transform.childCount !=0)
 		{
-			pHand.GetComponentInChildren<weapon>().Shoot();
+			int weapFire = (int) pHand.transform.GetChild(0).GetComponent<weapon>().weaponFireType;
+			//single
+			if(weapFire == 0 || weapFire == 3)
+			{
+				if(Input.GetButtonDown ("Fire1"))
+				{
+					pHand.GetComponentInChildren<weapon>().Shoot();
+				}
+			}
+			//burst
+			//auto
+			if(weapFire == 1 || weapFire == 2)
+			{
+				if(Input.GetButton("Fire1"))
+				{
+					pHand.GetComponentInChildren<weapon>().Shoot();
+				}
+			}
+			//Input.GetButtonDown("Fire1") && 
+			//pHand.GetComponentInChildren<weapon>().Shoot();
 		}
 
 		//should probably go somewhere better instead of in the player
@@ -140,7 +158,7 @@ public class Controls : MonoBehaviour {
 					if(other.gameObject != oldWeap)
 					{
 						pHand.DetachChildren();
-						oldWeap.transform.localScale = new Vector2(1.0f,1.0f);
+						oldWeap.transform.localScale = new Vector2(5.0f,5.0f);
 						oldWeap.GetComponent<Rigidbody2D>().AddForce(throwForce);
 					}
 				}
@@ -172,6 +190,10 @@ public class Controls : MonoBehaviour {
 				Destroy(other.gameObject);
 				curSupplies = curSupplies +1;
 				onePickUp = false;
+			}
+			else if(other.gameObject.tag == "chest")
+			{
+				//plug in shit here
 			}
 		}
 
